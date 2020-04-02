@@ -65,6 +65,7 @@ function App() {
       <Container maxWidth={"lg"}>
         <PaddingTopAndBottomThreeEm>
         <h2>Anno 1800 Modding Editor (Alpha)</h2>
+          <h4>by 丘山北鲲 </h4>
         </PaddingTopAndBottomThreeEm>
 
         <h3>Tutorial</h3>
@@ -111,8 +112,9 @@ function App() {
           <hr />
         </PaddingSurroundTopAndBottomOneEm>
 
-        <StyledButton onClick={HandleAddVCate}>Add new category </StyledButton>
         {RenderCate(items)}
+        <StyledButton onClick={HandleAddVCate}>Add new category </StyledButton>
+
       </Container>
     </div>
 
