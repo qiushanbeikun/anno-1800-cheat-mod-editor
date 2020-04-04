@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import {StyledButton} from "../components/commonStyles";
 import {XMLTest} from "../zip/exampleXMLCode";
 import AceEditor from "react-ace";
-import Example from '../zip/data/config/export/main/assert/asserts.xml'
 
 import "ace-builds/src-noconflict/mode-xml";
 import "ace-builds/src-noconflict/theme-monokai";
@@ -14,18 +13,31 @@ function onChange(newValue) {
 
 let parser = new DOMParser();
 
-function formatXMLMod(XMLString) {
-  let xmlDoc = parser.parseFromString(XMLString, "text/xml");
-  console.log(xmlDoc)
-}
-
 
 export default function Editor() {
 
+
+  let existingMods = [];
+
+
+  function formatXMLMod(XMLString) {
+    let xmlDoc = parser.parseFromString(XMLString, "text/xml");
+    let allMods = xmlDoc.getElementsByTagName("ModOps")[0].getElementsByTagName("ModOp");
+    for (let each of allMods) {
+      const guid = each.getAttribute("GUID");
+      const path = each.getAttribute("Path");
+      const amount = each.getElementsByTagName("Amount")[0].childNodes[0].nodeValue;
+      existingMods[existingMods.length] = [guid, path,amount];
+    }
+    console.log(existingMods);
+  }
+
   formatXMLMod(XMLTest);
 
-  const [items, setItems] = useState([]);
+
+  const [items, setItems] = useState(existingMods);
   const [XMLCode, setXMLCode] = useState(XMLTest);
+
 
   function HandleAddVCate(){
     let newItem = [0, 0, 0];
@@ -90,16 +102,16 @@ export function RenderCate(input) {
 
               </Grid>
 
-              <Grid item sm={5}>
-                <h2>{each[0]}</h2>
+              <Grid item sm={2}>
+                <h6>{each[0]}</h6>
+              </Grid>
+
+              <Grid item sm={6}>
+                <h6>{each[1]}</h6>
               </Grid>
 
               <Grid item sm={3}>
-                <h2>{each[1]}</h2>
-              </Grid>
-
-              <Grid item sm={3}>
-                <h2>{each[2]}</h2>
+                <h6>{each[2]}</h6>
               </Grid>
 
             </Grid>
