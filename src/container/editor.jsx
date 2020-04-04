@@ -7,37 +7,41 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-xml";
 import "ace-builds/src-noconflict/theme-monokai";
 
-function onChange(newValue) {
-  console.log("change");
-}
-
 let parser = new DOMParser();
 
 
 export default function Editor() {
 
-
   let existingMods = [];
-
-
-  function formatXMLMod(XMLString) {
-    let xmlDoc = parser.parseFromString(XMLString, "text/xml");
-    let allMods = xmlDoc.getElementsByTagName("ModOps")[0].getElementsByTagName("ModOp");
-    for (let each of allMods) {
-      const guid = each.getAttribute("GUID");
-      const path = each.getAttribute("Path");
-      const amount = each.getElementsByTagName("Amount")[0].childNodes[0].nodeValue;
-      existingMods[existingMods.length] = [guid, path,amount];
-    }
-    console.log(existingMods);
-  }
-
-  formatXMLMod(XMLTest);
-
 
   const [items, setItems] = useState(existingMods);
   const [XMLCode, setXMLCode] = useState(XMLTest);
 
+  function formatXMLMod(XMLString) {
+    try {
+      let xmlDoc = parser.parseFromString(XMLString, "text/xml");
+      let allMods = xmlDoc.getElementsByTagName("ModOps")[0].getElementsByTagName("ModOp");
+      for (let i=0; i<allMods.length; i++) {
+        let each = allMods[i];
+        const guid = each.getAttribute("GUID");
+        const path = each.getAttribute("Path");
+        const amount = each.getElementsByTagName("Amount")[0].childNodes[0].nodeValue;
+        existingMods[i] = [guid, path,amount];
+      }
+
+    } catch (e) {
+      existingMods = [["cannot", "read this", "XML"]];
+    }
+    console.log("once");
+  }
+
+  formatXMLMod(XMLCode);
+
+  function onChange(newValue) {
+    setXMLCode(newValue);
+    formatXMLMod(XMLCode);
+    setItems(existingMods);
+  }
 
   function HandleAddVCate(){
     let newItem = [0, 0, 0];
@@ -63,7 +67,7 @@ export default function Editor() {
           <StyledButton>To Table</StyledButton>
           <AceEditor
             width="100%"
-            height="90vh"
+            height="100vh"
             placeholder="Placeholder Text"
             mode="xml"
             theme="monokai"
