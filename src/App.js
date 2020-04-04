@@ -1,67 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import Typography from "@material-ui/core/Typography";
-import styled from "styled-components";
+import React from 'react';
 import './App.css';
 import {
-  Heading,
   PaddingSurroundTopAndBottomOneEm,
   PaddingTopAndBottomThreeEm,
-  StyledButton
 } from "./components/commonStyles";
 import {Container} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import Editor from "./container/editor";
+import {StyledText} from "./components/commonStyles";
 
-function RenderCate(input) {
-  return (
-    <div>
-      {input.map((each, index) => {
-        return (
-          <div>
-            <Grid container>
-              <Grid sm={1}>
-
-              </Grid>
-
-              <Grid sm={5}>
-                <h2>{each[0]}</h2>
-              </Grid>
-
-              <Grid sm={3}>
-                <h2>{each[1]}</h2>
-              </Grid>
-
-              <Grid sm={3}>
-                <h2>{each[2]}</h2>
-              </Grid>
-            </Grid>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-const StyledText = styled(Typography)`
-  color: #eeeeee;
-`;
 
 function App() {
 
-
-  const [items, setItems] = useState([[1, 2, 3], [4, 5, 6]]);
-
-  // newItem format [itemID, default-production, default-cycle-time]
-  function HandleAddVCate(){
-    let newItem = [0, 0, 0];
-    setItems([...items, newItem]);
-  }
-
-  useEffect(() => {
-    RenderCate(items);
-  });
-
   return (
-    <div className={"App"}>
+    <div>
       <Container maxWidth={"lg"}>
         <PaddingTopAndBottomThreeEm>
         <h2>Anno 1800 Modding Editor (Alpha)</h2>
@@ -91,7 +42,7 @@ function App() {
             2. Customize your own mods in the editor section. Enter the item ID (see the table in the appendix), change the production amount and speed.
           </StyledText>
           <StyledText paragraph>
-            3. Click download and extract the zip file at your game directory.
+            3. Click download and extract the zip file at your game mods directory. (locate mods directory from <a href={"https://github.com/xforce/anno1800-mod-loader#installation"} target={"_blank"} rel="noopener noreferrer"> video tutorial </a>)
           </StyledText>
           <StyledText paragraph>
             4. (Restart game) Done!
@@ -112,8 +63,7 @@ function App() {
           <hr />
         </PaddingSurroundTopAndBottomOneEm>
 
-        {RenderCate(items)}
-        <StyledButton onClick={HandleAddVCate}>Add new category </StyledButton>
+        <Editor />
 
       </Container>
     </div>
